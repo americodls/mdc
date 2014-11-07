@@ -10,7 +10,7 @@ markdown_extensions = { no_intra_emphasis: true, tables: true, fenced_code_block
 markdown_renderer = Redcarpet::Render::HTML.new(with_toc_data: true, prettify: true)
 markdown = Redcarpet::Markdown.new(markdown_renderer, markdown_extensions)
 
-TEMPLATE = File.expand_path("../templates/default.html.erb", __dir__)
+TEMPLATE = File.expand_path("../templates/default.html.erb", File.dirname(__FILE__))
 
 class Renderer
   def initialize(body)
