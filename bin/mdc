@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+
+fail "You need to install `wkhtmltopdf` first." unless system("which wkhtmltopdf")
+
+require 'erb'
+require 'redcarpet'
+require 'pathname'
+
+markdown_extensions = { no_intra_emphasis: true, tables: true, fenced_code_blocks: true, autolink: true, disable_indented_code_blocks: true, strikethrough: true, lax_spacing: true, space_after_headers: true, superscript: true, underline: true, highlight: true, quote: true, footnotes: true }
+markdown_renderer = Redcarpet::Render::HTML.new(with_toc_data: true, prettify: true)
+markdown = Redcarpet::Markdown.new(markdown_renderer, markdown_extensions)
+
+TEMPLATE = File.expand_path("../templates/default.html.erb", __dir__)
+
+class Renderer
+  def initialize(body)
+    @body = body
+  end
+
+  def render(template = File.read(TEMPLATE))
+    renderer = ERB.new(template)
+    renderer.result(binding)
+  end
+end
+
+ARGV.each do|markdown_file|
+  markdown_file = File.expand_path(markdown_file)
+  dirname = Pathname.new(File.dirname(markdown_file))
+  basename = File.basename(markdown_file, ".*")
+
+  html_filename = dirname.join(basename + ".html")
+  pdf_filename  = dirname.join(basename + ".pdf")
+
+  input = File.read(markdown_file)
+  markdown_output = markdown.render(input)
+
+  html_output = Renderer.new(markdown_output).render
+  File.open(html_filename, "w") { |file| file.puts html_output }
+
+  system("wkhtmltopdf --print-media-type #{html_filename} #{pdf_filename}")
+end
