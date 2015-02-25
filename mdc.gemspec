@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = MDC::VERSION
   spec.authors       = ["Americo Duarte"]
   spec.email         = ["americodls@gmail.com"]
-  spec.summary       = %q{A simple executable that generate html and pdf from markdown files.}
-  spec.description   = %q{A simple executable that generate html and pdf from markdown files.}
+  spec.summary       = %q{This gem has been descontinued. Give a try to https://github.com/ianks/octodown}
+  spec.description   = %q{This gem has been descontinued. Give a try to https://github.com/ianks/octodown}
   spec.homepage      = "https://github.com/americodls/mdc"
   spec.license       = "MIT"
 
